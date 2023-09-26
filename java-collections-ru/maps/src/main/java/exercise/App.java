@@ -15,6 +15,12 @@ class App {
         Map<String, Integer> wordsCount = new HashMap<>();
         for (String w: words
              ) {
+            /*
+                alternate solve:
+                int wordCounter = (in) map.getOrDefault(word, 0);
+                wordCounter += 1;
+                wordsCount.put(w, wordCount);
+             */
             var i = (wordsCount.containsKey(w)) ? wordsCount.get(w) + 1 : 1;
             wordsCount.put(w, i);
         }
