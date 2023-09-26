@@ -17,7 +17,7 @@ class App {
              ) {
             /*
                 alternate solve:
-                int wordCounter = (in) map.getOrDefault(word, 0);
+                int wordCounter = (int) map.getOrDefault(word, 0);
                 wordCounter += 1;
                 wordsCount.put(w, wordCount);
              */
