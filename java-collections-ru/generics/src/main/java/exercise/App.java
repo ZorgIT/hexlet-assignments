@@ -23,6 +23,7 @@ final class App {
                 result.add(map);
             }
         }
+
         return result;
     }
 }
