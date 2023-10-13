@@ -1,24 +1,25 @@
 package exercise;
 
+import java.util.Arrays;
+
 // BEGIN
 class App {
+    public static String[] duplicateValues(String[] items) {
+
+        return Arrays.stream(items)
+                .flatMap(item -> Arrays.stream(new String[] {item, item}))
+                .toArray(String[]::new);
+    }
+
     public static String[][] enlargeArrayImage(String[][] image) {
-        int rows = image.length;
-        int cols = image[0].length;
 
-        String[][] enlargedImage = new String[rows * 2][cols * 2];
+        String[][] horizontalyStretched = Arrays.stream(image)
+                .map(App::duplicateValues)
+                .toArray(String[][]::new);
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                String pixel = image[i][j];
-                enlargedImage[i * 2][j * 2] = pixel;
-                enlargedImage[i * 2][j * 2 + 1] = pixel;
-                enlargedImage[i * 2 + 1][j * 2] = pixel;
-                enlargedImage[i * 2 + 1][j * 2 + 1] = pixel;
-
-            }
-        }
-        return enlargedImage;
+        return Arrays.stream(horizontalyStretched)
+                .flatMap(item -> Arrays.stream(new String[][] {item, item}))
+                .toArray(String[][]::new);
     }
 }
 // END
