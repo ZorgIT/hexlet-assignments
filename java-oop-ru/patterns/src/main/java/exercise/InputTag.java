@@ -1,12 +1,15 @@
-package hexlet.oop.l5.patternhw;
+package exercise;
 
-import lombok.AllArgsConstructor;
 
 // BEGIN
-@AllArgsConstructor
 public class InputTag implements TagInterface {
     String type;
     String value;
+
+    public InputTag(String newType, String newValue) {
+        this.type = newType;
+        this.value = newValue;
+    }
 
     @Override
     public String render() {

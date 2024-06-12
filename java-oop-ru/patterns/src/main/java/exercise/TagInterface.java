@@ -1,4 +1,4 @@
-package hexlet.oop.l5.patternhw;
+package exercise;
 
 // BEGIN
 public interface TagInterface {
