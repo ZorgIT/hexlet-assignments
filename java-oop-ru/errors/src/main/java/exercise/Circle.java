@@ -13,10 +13,10 @@ public class Circle {
     public double getSquare() throws NegativeRadiusException {
 
         if (radius < 0) {
-            throw new NegativeRadiusException();
+            throw new NegativeRadiusException("");
         }
 
-        return Math.PI * radius * radius;
+        return Math.PI * Math.pow(this.radius, 2);
     }
 
     public int getRadius() {
