@@ -1,7 +1,5 @@
 package exercise;
 
-import hexlet.oop.l8.hw_reflection.NotNull;
-
 class Address {
     // BEGIN
     @NotNull
