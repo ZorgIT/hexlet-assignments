@@ -32,10 +32,11 @@ public final class App {
 
         app.get("/users/{id}", ctx -> {
             var userId = ctx.pathParamAsClass("id", Integer.class).get();
-            if (userId < 0 || userId >= USERS.size()) {
-                throw new NotFoundResponse("User not found");
-            }
-            var user = USERS.get(userId);
+            var user =
+                    USERS.stream().filter(x -> x.getId() == userId)
+                            .findFirst().orElseThrow(() -> new NotFoundResponse(
+                                    "User not found"));
+
 
             var uPage = new UserPage(user);
             ctx.render("users/show.jte", model("uPage", uPage));
