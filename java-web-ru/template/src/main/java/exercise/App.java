@@ -1,13 +1,13 @@
 package exercise;
 
-import io.javalin.Javalin;
-import java.util.List;
-import io.javalin.http.NotFoundResponse;
-import exercise.model.User;
 import exercise.dto.users.UserPage;
-import exercise.dto.users.UsersPage;
-import static io.javalin.rendering.template.TemplateUtil.model;
+import exercise.dto.users.UsersPage;import exercise.model.User;
+import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
+
+import java.util.List;
+
+import static io.javalin.rendering.template.TemplateUtil.model;
 
 public final class App {
 
@@ -22,7 +22,23 @@ public final class App {
         });
 
         // BEGIN
-        
+        app.get("/users", ctx -> {
+            var header = "Список пользователей";
+            var usersPage = new UsersPage(USERS, header);
+            ctx.render("users/index.jte", model("uPage", usersPage));
+        });
+
+        app.get("/users/{id}", ctx -> {
+            var userId = ctx.pathParamAsClass("id", Integer.class).get();
+            if (userId < 0 || userId >= USERS.size()) {
+                throw new NotFoundResponse("User not found");
+            }
+            var user = USERS.get(userId);
+
+            var uPage = new UserPage(user);
+            ctx.render("users/show.jte", model("uPage", uPage));
+        });
+
         // END
 
         app.get("/", ctx -> {
