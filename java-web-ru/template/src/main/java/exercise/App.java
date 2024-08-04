@@ -1,8 +1,10 @@
 package exercise;
 
 import exercise.dto.users.UserPage;
-import exercise.dto.users.UsersPage;import exercise.model.User;
+import exercise.dto.users.UsersPage;
+import exercise.model.User;
 import io.javalin.Javalin;
+import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
 
 import java.util.List;
