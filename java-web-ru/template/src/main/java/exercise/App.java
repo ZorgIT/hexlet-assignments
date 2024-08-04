@@ -7,9 +7,12 @@ import io.javalin.Javalin;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
+
 
 public final class App {
 
@@ -26,7 +29,10 @@ public final class App {
         // BEGIN
         app.get("/users", ctx -> {
             var header = "Список пользователей";
-            var usersPage = new UsersPage(USERS, header);
+            var sortedUsers = USERS.stream()
+                    .sorted(Comparator.comparingLong(User::getId))
+                    .collect(Collectors.toList());
+            var usersPage = new UsersPage(sortedUsers, header);
             ctx.render("users/index.jte", model("uPage", usersPage));
         });
 
@@ -36,7 +42,6 @@ public final class App {
                     USERS.stream().filter(x -> x.getId() == userId)
                             .findFirst().orElseThrow(() -> new NotFoundResponse(
                                     "User not found"));
-
 
             var uPage = new UserPage(user);
             ctx.render("users/show.jte", model("uPage", uPage));
