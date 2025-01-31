@@ -11,6 +11,7 @@ import kong.unirest.Unirest;
 import io.javalin.Javalin;
 import exercise.repository.ArticleRepository;
 import exercise.model.Article;
+
 import java.util.List;
 
 class AppTest {
@@ -57,17 +58,17 @@ class AppTest {
     @Test
     void testCreateArticlePositive() throws Exception {
         HttpResponse responsePost = Unirest
-            .post(baseUrl + "/articles")
-            .field("title", "test title")
-            .field("content", "test content")
-            .asEmpty();
+                .post(baseUrl + "/articles")
+                .field("title", "test title")
+                .field("content", "test content")
+                .asEmpty();
 
         assertThat(responsePost.getStatus()).isEqualTo(302);
         assertThat(responsePost.getHeaders().getFirst("Location")).isEqualTo("/articles");
 
         HttpResponse<String> response = Unirest
-            .get(baseUrl + "/articles")
-            .asString();
+                .get(baseUrl + "/articles")
+                .asString();
         String body = response.getBody();
         assertThat(body).contains("test title");
         assertThat(body).contains("test content");
@@ -79,10 +80,10 @@ class AppTest {
     @Test
     void testCreateArticleNegative1() throws Exception {
         HttpResponse<String> responsePost = Unirest
-            .post(baseUrl + "/articles")
-            .field("title", "testTitle")
-            .field("content", "testBody")
-            .asString();
+                .post(baseUrl + "/articles")
+                .field("title", "testTitle")
+                .field("content", "testBody")
+                .asString();
 
         assertThat(responsePost.getStatus()).isEqualTo(422);
 
@@ -98,10 +99,10 @@ class AppTest {
     @Test
     void testCreateArticleNegative2() throws Exception {
         HttpResponse<String> responsePost = Unirest
-            .post(baseUrl + "/articles")
-            .field("title", "q")
-            .field("content", "test content")
-            .asString();
+                .post(baseUrl + "/articles")
+                .field("title", "q")
+                .field("content", "test content")
+                .asString();
 
         assertThat(responsePost.getStatus()).isEqualTo(422);
 
@@ -117,18 +118,18 @@ class AppTest {
     @Test
     void testCreateArticleNegative3() throws Exception {
         HttpResponse<String> response1 = Unirest
-            .post(baseUrl + "/articles")
-            .field("title", "test article")
-            .field("content", "test content")
-            .asEmpty();
+                .post(baseUrl + "/articles")
+                .field("title", "test article")
+                .field("content", "test content")
+                .asEmpty();
 
         assertThat(response1.getStatus()).isEqualTo(302);
 
         HttpResponse<String> response2 = Unirest
-            .post(baseUrl + "/articles")
-            .field("title", "test article")
-            .field("content", "test content 2")
-            .asString();
+                .post(baseUrl + "/articles")
+                .field("title", "test article")
+                .field("content", "test content 2")
+                .asString();
 
         assertThat(response2.getStatus()).isEqualTo(422);
 
