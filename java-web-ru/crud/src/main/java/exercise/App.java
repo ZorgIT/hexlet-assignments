@@ -9,7 +9,6 @@ import io.javalin.rendering.template.JavalinJte;
 public final class App {
 
     public static Javalin getApp() {
-
         var app = Javalin.create(config -> {
             config.bundledPlugins.enableDevLogging();
             config.fileRenderer(new JavalinJte());
@@ -17,9 +16,11 @@ public final class App {
 
         app.get(NamedRoutes.rootPath(), RootController::index);
 
-        // BEGIN
-        
-        // END
+        // Маршрут для списка постов
+        app.get(NamedRoutes.postsPath(), PostsController::index);
+
+        // Маршрут для конкретного поста
+        app.get(NamedRoutes.postPath("{id}"), PostsController::show);
 
         return app;
     }
