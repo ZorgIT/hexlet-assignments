@@ -25,7 +25,7 @@ public final class App {
 
         // BEGIN
         app.get("/posts/{id}/edit", PostsController::edit);
-        app.patch("/posts/{id}", PostsController::update);
+        app.post("/posts/{id}", PostsController::update);
         app.delete("/posts/{id}", PostsController::destroy);
         // END
 
