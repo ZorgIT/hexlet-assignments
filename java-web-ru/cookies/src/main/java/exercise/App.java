@@ -15,10 +15,16 @@ public final class App {
         });
 
         // BEGIN
+        // Маршрут для регистрации пользователя
+        app.post(NamedRoutes.usersPath(), UsersController::create);
 
+        // Маршрут для отображения страницы регистрации
+        app.get(NamedRoutes.buildUserPath(), UsersController::build);
+
+        // Маршрут для отображения данных пользователя
+        app.get(NamedRoutes.userPath("{id}"), UsersController::show);
         // END
 
-        app.get(NamedRoutes.userPath("{id}"), UsersController::show);
         return app;
     }
 
