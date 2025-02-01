@@ -2,7 +2,9 @@ package exercise.repository;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import exercise.model.Post;
+
 import java.util.Optional;
 
 public class PostRepository {
@@ -45,5 +47,9 @@ public class PostRepository {
 
     public static void clear() {
         entities.clear();
+    }
+
+    public static void destroy(Long id) {
+        entities.removeIf(entity -> entity.getId().equals(id));
     }
 }

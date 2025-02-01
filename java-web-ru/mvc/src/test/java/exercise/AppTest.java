@@ -97,7 +97,7 @@ class AppTest {
             assertThat(response.code()).isEqualTo(200);
 
             var actualPost = PostRepository.find(existingPost.getId())
-                .orElse(null);
+                    .orElse(null);
             assertThat(actualPost).isNotNull();
             assertThat(actualPost.getName()).isEqualTo("new name");
             assertThat(actualPost.getBody()).isEqualTo("test content");
@@ -115,7 +115,7 @@ class AppTest {
             assertThat(response.body().string()).contains("q", "test content");
 
             var actualPost = PostRepository.find(existingPost.getId())
-                .orElse(null);
+                    .orElse(null);
             assertThat(actualPost).isNotNull();
             assertThat(actualPost.getName()).isEqualTo(existingPost.getName());
             assertThat(actualPost.getBody()).isEqualTo(existingPost.getBody());
