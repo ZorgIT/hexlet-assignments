@@ -1,9 +1,13 @@
 package exercise;
 
+import exercise.dto.MainPage;
+import exercise.util.Security;
 import io.javalin.Javalin;
 import exercise.controller.SessionsController;
 import exercise.util.NamedRoutes;
 import io.javalin.rendering.template.JavalinJte;
+
+import static io.javalin.rendering.template.TemplateUtil.model;
 
 
 public final class App {
@@ -16,7 +20,17 @@ public final class App {
         });
 
         // BEGIN
-        
+        app.before(Security::checkAuthentication);
+
+        app.get("/", ctx -> {
+            var currentUser = ctx.sessionAttribute("currentUser");
+            var page = new MainPage(currentUser);
+            ctx.render("index.jte", model("page", page));
+        });
+
+        app.get(NamedRoutes.buildSessionPath(), SessionsController::build);
+        app.post(NamedRoutes.loginPath(), SessionsController::create);
+        app.post(NamedRoutes.logoutPath(), SessionsController::destroy);
         // END
 
         return app;
