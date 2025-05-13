@@ -55,7 +55,7 @@ public class Application {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/posts/{id]")
+    @GetMapping("/posts/{id}")
     public Optional<Post> show(@PathVariable Integer id) {
         return posts.stream()
                 .filter(p -> p.getId().equals(id))
@@ -76,7 +76,7 @@ public class Application {
         return data;
     }
 
-    @DeleteMapping("/pages/{id")
+    @DeleteMapping("/pages/{id}")
     public void delete(@PathVariable Integer id) {
         posts.removeIf(p -> p.getId().equals(id));
     }
