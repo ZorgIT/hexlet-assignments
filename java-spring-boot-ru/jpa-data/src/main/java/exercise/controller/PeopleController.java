@@ -2,6 +2,7 @@ package exercise.controller;
 
 import exercise.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,25 @@ public class PeopleController {
     }
 
     // BEGIN
-    
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<Person> showAll() {
+        return personRepository.findAll();
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Person> create(@RequestBody Person person) {
+        personRepository.save(person);
+        return new ResponseEntity<>(person, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Person> delete(@PathVariable long id) {
+        personRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     // END
 }
