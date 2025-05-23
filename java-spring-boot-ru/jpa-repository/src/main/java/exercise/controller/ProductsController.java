@@ -1,6 +1,7 @@
 package exercise.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,14 +23,20 @@ public class ProductsController {
     private ProductRepository productRepository;
 
     // BEGIN
-    
+    //Максимальная и минимальная цена
+    @GetMapping
+    public List<Product> getAllProducts(@RequestParam(defaultValue = "1") int min,
+                                        @RequestParam(defaultValue = "9999") int max) {
+        var sort = Sort.by(Sort.Order.asc("price"));
+        return productRepository.findByPriceBetween(min, max, sort);
+    }
     // END
 
     @GetMapping(path = "/{id}")
     public Product show(@PathVariable long id) {
 
-        var product =  productRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Product with id " + id + " not found"));
+        var product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product with id " + id + " not found"));
 
         return product;
     }
