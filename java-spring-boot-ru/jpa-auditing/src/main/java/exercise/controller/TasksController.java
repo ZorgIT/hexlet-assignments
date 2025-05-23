@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -51,8 +50,8 @@ public class TasksController {
     public ResponseEntity<Task> update(@PathVariable long id,
                                        @RequestBody Task taskData) {
         var task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Task with " +
-                        "id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task with "
+                        + "id " + id + " not found"));
 
         task.setTitle(taskData.getTitle());
         task.setDescription(taskData.getDescription());
