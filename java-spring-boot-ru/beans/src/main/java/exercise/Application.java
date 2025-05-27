@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import exercise.daytime.Daytime;
 import exercise.daytime.Day;
 import exercise.daytime.Night;
+import org.springframework.context.annotation.Bean;
 
 // BEGIN
 
@@ -21,6 +22,14 @@ public class Application {
     }
 
     // BEGIN
-    
+    @Bean
+    public Daytime daytime() {
+        var nowHour = LocalDateTime.now().getHour();
+        if (nowHour >= 6 && nowHour < 22) {
+            return new Day();
+        } else {
+            return new Night();
+        }
+    }
     // END
 }
