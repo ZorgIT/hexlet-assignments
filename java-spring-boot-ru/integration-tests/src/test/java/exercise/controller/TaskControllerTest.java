@@ -2,7 +2,6 @@ package exercise.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +23,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.datafaker.Faker;
