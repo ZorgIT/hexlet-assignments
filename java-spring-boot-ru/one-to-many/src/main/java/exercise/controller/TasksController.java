@@ -6,6 +6,8 @@ import exercise.dto.TaskCreateDTO;
 import exercise.dto.TaskDTO;
 import exercise.dto.TaskUpdateDTO;
 import exercise.mapper.TaskMapper;
+import exercise.model.User;
+import exercise.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,6 +30,9 @@ public class TasksController {
     // BEGIN
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private TaskMapper taskMapper;
@@ -55,24 +60,36 @@ public class TasksController {
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDTO create(@RequestBody @Valid TaskCreateDTO taskData) {
         var task = taskMapper.map(taskData);
+
+        if (task.getAssignee() == null) {
+            throw new IllegalArgumentException("Assignee must be specified");
+        }
+
         task = taskRepository.save(task);
-        var taskDTO = taskMapper.map(task);
-        return taskDTO;
+        return taskMapper.map(task);
     }
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDTO update(@PathVariable Long id, @RequestBody @Valid TaskUpdateDTO taskData) {
         var task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Task with  id"
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id "
                         + id + " not found"));
-        taskMapper.update(taskData, task);
-        taskRepository.save(task);
 
+        var assignee = userRepository.findById(taskData.getAssigneeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Assignee with id "
+                        + taskData.getAssigneeId() + " not found"));
+
+        taskMapper.update(taskData, task);
+        task.setAssignee(assignee); // вручную обновляем поле assignee
+
+        task = taskRepository.save(task);
         return taskMapper.map(task);
     }
 
-    @DeleteMapping
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         var task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task with  id"
