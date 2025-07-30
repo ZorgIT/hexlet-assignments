@@ -27,6 +27,59 @@ import jakarta.validation.Valid;
 @RequestMapping("/tasks")
 public class TasksController {
     // BEGIN
-    
+    @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
+    private TaskMapper taskMapper;
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskDTO> index() {
+        var tasks = taskRepository.findAll();
+        return tasks.stream()
+                .map(p -> taskMapper.map(p))
+                .toList();
+    }
+
+    @GetMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TaskDTO show(@PathVariable Long id) {
+        var task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with "
+                        + "id " + id + " not found"));
+        var taskDTO = taskMapper.map(task);
+        return taskDTO;
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TaskDTO create(@RequestBody @Valid TaskCreateDTO taskData) {
+        var task = taskMapper.map(taskData);
+        task = taskRepository.save(task);
+        var taskDTO = taskMapper.map(task);
+        return taskDTO;
+    }
+
+    @PutMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TaskDTO update(@PathVariable Long id, @RequestBody @Valid TaskUpdateDTO taskData) {
+        var task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with  id"
+                        + id + " not found"));
+        taskMapper.update(taskData, task);
+        taskRepository.save(task);
+
+        return taskMapper.map(task);
+    }
+
+    @DeleteMapping
+    public void delete(@PathVariable Long id) {
+        var task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with  id"
+                        + id + " not found"));
+        taskRepository.delete(task);
+    }
+
     // END
 }
