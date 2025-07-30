@@ -6,7 +6,6 @@ import exercise.dto.TaskCreateDTO;
 import exercise.dto.TaskDTO;
 import exercise.dto.TaskUpdateDTO;
 import exercise.mapper.TaskMapper;
-import exercise.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
