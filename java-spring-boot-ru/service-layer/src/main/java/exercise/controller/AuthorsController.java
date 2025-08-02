@@ -6,15 +6,8 @@ import exercise.dto.AuthorUpdateDTO;
 import exercise.service.AuthorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
@@ -27,6 +20,41 @@ public class AuthorsController {
     private AuthorService authorService;
 
     // BEGIN
-    
+
+    @GetMapping
+    public ResponseEntity<List<AuthorDTO>> index() {
+        var autorhs = authorService.getAll();
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(autorhs.size()))
+                .body(autorhs);
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<AuthorDTO> show(@PathVariable long id) {
+        var author = authorService.findById(id);
+        return author != null ?
+                ResponseEntity.ok().body(author) :
+                ResponseEntity.notFound().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<AuthorDTO> create(@RequestBody @Valid AuthorCreateDTO authorCreateDTO) {
+        var author = authorService.create(authorCreateDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(author);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<AuthorDTO> update(@RequestBody @Valid AuthorUpdateDTO authorUpdateDTO,
+                                            @PathVariable long id) {
+        var productDto = authorService.update(authorUpdateDTO, id);
+        return ResponseEntity.ok().body(productDto);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id) {
+        authorService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     // END
 }
