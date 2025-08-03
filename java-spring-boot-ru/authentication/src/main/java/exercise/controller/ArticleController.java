@@ -6,7 +6,6 @@ import exercise.dto.ArticleCreateDTO;
 import exercise.dto.ArticleDTO;
 import exercise.dto.ArticleUpdateDTO;
 import exercise.mapper.ArticleMapper;
-import exercise.repository.UserRepository;
 import exercise.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,8 +29,8 @@ public class ArticleController {
     @Autowired
     private ArticleRepository articleRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    //@Autowired
+    //private UserRepository userRepository;
 
     @Autowired
     private ArticleMapper articleMapper;
@@ -41,7 +40,14 @@ public class ArticleController {
 
 
     // BEGIN
-    
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    ArticleDTO createArticle(@RequestBody @Valid ArticleCreateDTO articleCreateDTO) {
+        var artice = articleMapper.map(articleCreateDTO);
+        artice.setAuthor(userUtils.getCurrentUser());
+        artice = articleRepository.save(artice);
+        return articleMapper.map(artice);
+    }
     // END
 
     @GetMapping("")
